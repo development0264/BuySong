@@ -1,0 +1,43 @@
+.lgBtn {
+    border-radius: 20px;
+    margin: 0.5rem 0;
+    width: 50%;
+  }
+  .pendingBody {
+    display: flex;
+    flex-direction: column;
+    padding: 0 4rem;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .lgBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 4rem 1rem;
+  }
+  
+  .pmuImage {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+  }
+  .labelSt {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .footerTxt {
+    color: #3b43f2;
+    font-weight: 800;
+  }
+  .mdFooter {
+    flex-direction: column;
+    border-top: none;
+  }
+  .modal-header {
+    border-bottom: none;
+  }
+  
