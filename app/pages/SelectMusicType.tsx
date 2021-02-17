@@ -14,13 +14,11 @@ import AppContainer from '../components/common/AppContainer';
 import { actions as AuthActions } from '../../redux/reducers/AuthReducer';
 import { actions as playerActions } from '../../redux/reducers/PlayerReducer';
 import {
-    actions as EventActions,
+    actions as EventRedActions,
     constants,
 } from '../../redux/reducers/EventReducer';
 import { actions as SubscriptionActions } from '../../redux/reducers/SubscriptionReducer';
 import { RootState } from '../../redux/reducers/RootReducer';
-import Logo from '../../assets/images/eppo_music.png';
-import Eppo_event from '../../assets/images/eppo_event.png';
 import Image1 from '../../assets/images/Bitmap.png';
 import Image2 from '../../assets/images/Bitmap(1).png';
 import Image3 from '../../assets/images/Bitmap(2).png';
@@ -43,7 +41,7 @@ const SelectMusicType: FC = (): JSX.Element => {
         (state: RootState) => state.subscription
     );
 
-    const eventState = useSelector((state: RootState) => {
+    const eventValue = useSelector((state: RootState) => {
         return state.event;
     });
     const {
@@ -60,7 +58,7 @@ const SelectMusicType: FC = (): JSX.Element => {
         currencySymbol,
         clientToken,
         reload,
-    } = eventState;
+    } = eventValue;
     const { isLogin, currentUser, location } = authState;
     const dispatch = useDispatch();
     // console.log('location', location);
@@ -94,7 +92,7 @@ const SelectMusicType: FC = (): JSX.Element => {
                 isRefreshed = false;
                 dispatch(AuthActions.logOut());
                 dispatch(playerActions.addSongs({ contents: [], index: 0 }));
-                dispatch(EventActions.clearEvent());
+                dispatch(EventRedActions.clearEvent());
             }
         }
     }, []);
@@ -108,7 +106,7 @@ const SelectMusicType: FC = (): JSX.Element => {
     useEffect(() => {
         if (location)
             dispatch(
-                EventActions.fetchPremiumContent({
+                EventRedActions.fetchPremiumContent({
                     countryCode: location.countryCode,
                     uid: currentUser.uid,
 
@@ -121,7 +119,7 @@ const SelectMusicType: FC = (): JSX.Element => {
             console.log("SNAP SHOT ==> ", snap.docChanges());
             if (location)
                 dispatch(
-                    EventActions.fetchPremiumContent({
+                    EventRedActions.fetchPremiumContent({
                         countryCode: location.countryCode,
                         uid: currentUser.uid,
                     })
@@ -133,7 +131,7 @@ const SelectMusicType: FC = (): JSX.Element => {
         console.log("reload", reload);
         if (reload == true) {
             refreshPage();
-            eventState.reload = false;
+            eventValue.reload = false;
         }
     }, [reload]);
 
@@ -141,7 +139,7 @@ const SelectMusicType: FC = (): JSX.Element => {
     useEffect(() => {
         if (location)
             dispatch(
-                EventActions.getCurrencySymbol({
+                EventRedActions.getCurrencySymbol({
                     'countryCode': location.countryCode
                 })
             );
@@ -161,7 +159,7 @@ const SelectMusicType: FC = (): JSX.Element => {
     useEffect(() => {
         if (isLogin) {
             dispatch(
-                EventActions.fetchPremiumContent({
+                EventRedActions.fetchPremiumContent({
                     countryCode: location.countryCode,
                     uid: currentUser.uid,
                 })
@@ -179,7 +177,7 @@ const SelectMusicType: FC = (): JSX.Element => {
                 appearance: 'error',
                 autoDismiss: true,
             });
-            dispatch(EventActions.clearEventError());
+            dispatch(EventRedActions.clearEventError());
         }
     }, [isError]);
 
@@ -216,7 +214,7 @@ const SelectMusicType: FC = (): JSX.Element => {
                         autoDismiss: true,
                     });
                     dispatch(
-                        EventActions.addRazorpayOrder({
+                        EventRedActions.addRazorpayOrder({
                             albumId: userSelectedPlan.priceData.albumId,
                             countryCode: location.countryCode,
                             transactionId: event.response.id,
@@ -225,7 +223,7 @@ const SelectMusicType: FC = (): JSX.Element => {
                         })
                     );
                     dispatch(
-                        EventActions.fetchPremiumContent({
+                        EventRedActions.fetchPremiumContent({
                             countryCode: location.countryCode,
                             uid: currentUser.uid,
                         })
@@ -243,7 +241,7 @@ const SelectMusicType: FC = (): JSX.Element => {
                                 // console.log(data);
                             });
                         }
-                        dispatch(EventActions.toggleRazorpayPopUp());
+                        dispatch(EventRedActions.toggleRazorpayPopUp());
                     },
                 },
             };
@@ -257,7 +255,7 @@ const SelectMusicType: FC = (): JSX.Element => {
     useEffect(() => {
         if (clientToken) {
             // console.log('Token', clientToken);
-            dispatch(EventActions.toggleBraintreePopUp());
+            dispatch(EventRedActions.toggleBraintreePopUp());
             braintree.dropin.create(
                 {
                     authorization: clientToken,
@@ -279,7 +277,7 @@ const SelectMusicType: FC = (): JSX.Element => {
                                 return;
                             } else {
                                 dispatch(
-                                    EventActions.setBraintreePaymentNonce({
+                                    EventRedActions.setBraintreePaymentNonce({
                                         nonce: payload.nonce,
                                         firstName: currentUser.firstName,
                                         lastName: currentUser.lastName,
@@ -323,7 +321,7 @@ const SelectMusicType: FC = (): JSX.Element => {
     const logout = (): void => {
         dispatch(AuthActions.logOut());
         dispatch(playerActions.addSongs({ contents: [], index: 0 }));
-        dispatch(EventActions.clearEvent());
+        dispatch(EventRedActions.clearEvent());
         addToast('Logged out successfully', {
             appearance: 'success',
             autoDismiss: true,
@@ -373,7 +371,7 @@ const SelectMusicType: FC = (): JSX.Element => {
         console.log("Currency ===> ", currency, location.countryCode);
 
         dispatch(
-            EventActions.premiumOrder({
+            EventRedActions.premiumOrder({
                 albumId: selectedPerformerId.priceData.albumId,
                 countryCode: isOther == true ? location.countryCode : 'OT',
                 uid: currentUser.uid,
@@ -423,7 +421,7 @@ const SelectMusicType: FC = (): JSX.Element => {
             return;
         } else {
             dispatch(
-                EventActions.getBraintreeClientToken({
+                EventRedActions.getBraintreeClientToken({
                     userId: currentUser.uid,
                 })
             );
@@ -461,7 +459,7 @@ const SelectMusicType: FC = (): JSX.Element => {
             />
             <Modal
                 show={showBraintreeModal}
-                onHide={(): void => dispatch(EventActions.toggleBraintreePopUp())}
+                onHide={(): void => dispatch(EventRedActions.toggleBraintreePopUp())}
                 dialogClassName="modal-40w"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -511,7 +509,6 @@ const SelectMusicType: FC = (): JSX.Element => {
                                                 <tr>
                                                     <Card.Title className="plan-monthly">
                                                         {selectedPlan == "chatra_musicSelect" ? <img src={Tick} alt={'Logo'} className={'tickImage'} /> : null}
-                                                        <img src={Eppo_event} alt={'Logo'} />
                                                     </Card.Title>
                                                 </tr>
                                                 <tr>
@@ -532,7 +529,6 @@ const SelectMusicType: FC = (): JSX.Element => {
                                                 <tr>
                                                     <Card.Title className="plan-monthly">
                                                         {selectedPlan == "musicSelect" ? <img src={Tick} alt={'Logo'} className={'tickImage'} /> : null}
-                                                        <img src={Eppo_event} alt={'Logo'} />
                                                     </Card.Title>
                                                 </tr>
                                                 <tr>
@@ -695,44 +691,6 @@ const SelectMusicType: FC = (): JSX.Element => {
         </>
     );
 };
-
-const PremiumPerformer = [
-    {
-        id: 1,
-        firstName: 'Sanjay',
-        lastName: 'Subramanian',
-        rate: '250',
-        logo: Image1,
-        contents: [
-            {
-                fileUrl:
-                    'https://eppomusic-source.s3.ap-south-1.amazonaws.com/0AGGvhpFToXvy7l5XDxr.mp3',
-                metadata: {
-                    raga: 'Rupaka',
-                    tala: 'adi',
-                    composer: 'thyagaraja',
-                },
-                title: 'Thillana',
-            },
-        ],
-    },
-    {
-        id: 2,
-        firstName: 'Pandit',
-        lastName: 'Ravi Shankar',
-        rate: '50',
-        logo: Image2,
-    },
-    {
-        id: 3,
-        firstName: 'Hariprasad',
-        lastName: 'Chaurasia',
-        rate: '180',
-        logo: Image3,
-    },
-    { id: 4, firstName: 'Test', lastName: 'Test', rate: '150', logo: Image1 },
-    { id: 5, firstName: 'Test1', lastName: 'Test 1', rate: '100', logo: Image2 },
-];
 
 const Container = styled.div`
   flex: 1,

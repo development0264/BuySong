@@ -119,7 +119,7 @@ const Payment: FC = (): JSX.Element => {
       var options = {
         key: config.razorpay.key,
         subscription_id: subscription.subscriptionId,
-        name: 'Eppo Music',
+        name: 'Music',
         description: 'Subscription Plan Payment',
         prefill: {
           'name': currentUser.firstName + ' ' + currentUser.lastName,

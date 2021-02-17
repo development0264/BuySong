@@ -91,10 +91,10 @@ const AlbumDetail: FC<Props> = ({
   };
 
   return (
-    <AlbumDetails>
-      <AlbumDetailCard>
+    <Album>
+      <AlbumCard>
         <CardRow>
-          <AlbumInfo>
+          <AlbumCardInfo>
             <Image src={activeAlbum.image} alt="albumImage" />
             <Info>
               <TopBlock>
@@ -107,7 +107,7 @@ const AlbumDetail: FC<Props> = ({
                 ))}
               </Artists>
             </Info>
-          </AlbumInfo>
+          </AlbumCardInfo>
           <RightContainer onClick={handleBack}>
             <Button>
               <i className="fa fa-arrow-circle-o-left" />
@@ -115,7 +115,7 @@ const AlbumDetail: FC<Props> = ({
             </Button>
           </RightContainer>
         </CardRow>
-      </AlbumDetailCard>
+      </AlbumCard>
       <SongsContainer>
         <FilesContainer>
           {activeContents?.length > 0 &&
@@ -139,15 +139,15 @@ const AlbumDetail: FC<Props> = ({
             })}
         </FilesContainer>
       </SongsContainer>
-    </AlbumDetails>
+    </Album>
   );
 };
 
-const AlbumDetails = styled.div`
+const Album = styled.div`
   flex: 1 1 0;
   position: relative;
 `;
-const AlbumDetailCard = styled.div`
+const AlbumCard = styled.div`
   display: flex;
   justify-content: space-between;
 `;
@@ -162,7 +162,7 @@ const Image = styled.img`
   height: 145px;
   border-radius: 10px;
 `;
-const AlbumInfo = styled.div`
+const AlbumCardInfo = styled.div`
   display: flex;
   width: 70%;
 `;
